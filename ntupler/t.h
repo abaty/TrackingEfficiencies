@@ -178,9 +178,9 @@ t::t(TString infile,TTree *tree)
 {
       f = TFile::Open(infile.Data());
       //tree=(TTree*)f->Get("akPu3PFJetAnalyzer/t");
-	//tree=(TTree*)f->Get("akPu3CaloJetAnalyzer/t");
+	tree=(TTree*)f->Get("akPu3CaloJetAnalyzer/t");
 	//tree=(TTree*)f->Get("akVs3CaloJetAnalyzer/t");
-	tree=(TTree*)f->Get("akVs3PFJetAnalyzer/t");  
+	//tree=(TTree*)f->Get("akVs3PFJetAnalyzer/t");  
 	Init(tree);
 	  // f->Close();
 }

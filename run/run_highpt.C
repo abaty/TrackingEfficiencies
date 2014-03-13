@@ -19,8 +19,8 @@ void run_highpt(){
 
 //change to 0 normally
  cout<<"before the pt loop"<<endl;
- for(int ipt=2; ipt<npt;ipt++){
- 	for(int icent=0; icent<ncent; icent++){
+ for(int ipt=2; ipt<3;ipt++){
+ 	for(int icent=2; icent<ncent; icent++){
   		int icent_step=0;
   		int iaccept_step=0;
   		int ipt_step=0;

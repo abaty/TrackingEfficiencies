@@ -2,7 +2,7 @@
 #include "../ntupler/track_ntupler.C"
 
 void run(){
- int nevents=50000;
+ int nevents[]={50000,50000,50000,100000};
  int npt=4;
  int ncent=5;
  double ptmin[]={0.5,1,3,8};
@@ -19,8 +19,8 @@ void run(){
 
 //change to 0 normally
  cout<<"before the pt loop"<<endl;
- for(int ipt=0; ipt<npt;ipt++){
- 	for(int icent=0; icent<ncent; icent++){
+ for(int ipt=0; ipt<1;ipt++){
+ 	for(int icent=0; icent<1; icent++){
   		int icent_step=0;
   		int iaccept_step=0;
   		int ipt_step=0;
@@ -40,8 +40,8 @@ void run(){
 
   		while(icent_step<ncent_step[ipt] && iaccept_step<naccept_step[ipt] && ipt_step<npt_step[ipt] && irmin_step<nrmin_step[ipt]){
   			cout<<"\n\n icent_step= "<<icent_step<<" iaccept_step= "<<iaccept_step<<" ipt_step= "<<ipt_step<<" irmin_step= "<<irmin_step<<" pt_range= "<<ptmin[ipt]<<"-"<<ptmax[ipt]<<" cent_range= "<<centmin[icent]<<"-"<<centmax[icent]<<"\n"<<endl;
-  		 	track_ntupler(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents);
-  		 	plot_efficiency(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents);
+  		 	track_ntupler(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents[ipt]);
+  		 	plot_efficiency(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents[ipt]);
   		 	if(istep%4==0) icent_step++;
   		 	if(istep%4==1) iaccept_step++;
   		 	if(istep%4==2) ipt_step++;
@@ -52,7 +52,7 @@ void run(){
   		if((istep-1)%4==1) iaccept_step--;
   		if((istep-1)%4==2) ipt_step--;
   		if((istep-1)%4==3) irmin_step--;
-  		plot_efficiency(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents,1);
+  		plot_efficiency(icent_step,iaccept_step,ipt_step,irmin_step,ptmin[ipt],ptmax[ipt],centmin[icent],centmax[icent],nevents[ipt],1);
 		
 		//terminates loop after 1 iteration only in the high pt bin
 		if((ipt == npt-2) && (icent==2)){

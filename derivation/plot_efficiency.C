@@ -44,7 +44,7 @@ TH1D * eta_gen = new TH1D("eta_gen",";#eta;N_{part}",20,-2.4,2.4);
 TH1D * eta_reco = new TH1D("eta_reco",";#eta;N_{part}",20,-2.4,2.4);
 nt->Draw("eta>>eta_gen","");
 nt->Draw("eta>>eta_reco","mpt>0");
-nt->Draw("(mpt>0):eta>>p_eta","(mpt<=0 || (trackselect && mpt>0)) && pt>1");
+nt->Draw("(mpt>0 && trackselect):eta>>p_eta","pt>1");
 eta_gen->SetMarkerStyle(25);
 
 TLegend *t5=new TLegend(0.4,0.85,0.9,0.95); 
@@ -71,7 +71,7 @@ c1_2->SaveAs("../plots/eta_dists.png");
 
 ///////////acceptance dependent efficiency/////////
 TProfile2D * p_eta_phi = new TProfile2D(Form("p_eta_phi"),";#phi;#eta;",20,-TMath::Pi(),TMath::Pi(),20,-2.4,2.4);
-nt->Draw(Form("(mpt>0):eta:phi>>p_eta_phi"),Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4 && pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw(Form("(mpt>0 && trackselect):eta:phi>>p_eta_phi"),Form("((abs(eta)<2.4 && pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c2 = new TCanvas("c2","",600,600);
 c2->SetRightMargin(0.2);
@@ -101,7 +101,7 @@ TH1D * pt_gen = new TH1D("pt_gen",";p_{T}(GeV/c);N_{part}",maxbin,x);
 TH1D * pt_reco = new TH1D("pt_reco",";p_{T}(GeV/c);N_{part}",maxbin,x);
 nt->Draw("pt>>pt_gen","");
 nt->Draw("pt>>pt_reco","mpt>0");
-nt->Draw("(mpt>0):pt>>p_pt","mpt<=0 || (trackselect && mpt>0)");
+nt->Draw("(mpt>0 && trackselect):pt>>p_pt","");
 
 TCanvas * c3 = new TCanvas("c3","",600,600);
 c3->SetLogx();
@@ -126,7 +126,7 @@ TH1D * cent_gen = new TH1D("cent_gen",";centrality bin;N_{part}",40,0,40);
 TH1D * cent_reco = new TH1D("cent_reco",";centrality bin;N_{part}",40,0,40);
 nt->Draw("cent>>cent_gen","");
 nt->Draw("cent>>cent_reco","mpt>0");
-nt->Draw("(mpt>0):cent>>p_cent",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(mpt>0 && trackselect):cent>>p_cent",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TH1D * eff_cent=(TH1D*)cent_reco->Clone("eff_cent");
 eff_cent->Divide(cent_gen);
@@ -156,13 +156,13 @@ for(int i=0; i<=n_rmin_bins; i++){
 }
 
 TProfile * p_rmin = new TProfile("p_rmin",";#phi;#eta;efficiency",n_rmin_bins,rmin_bins);
-nt->Draw("eff_rmin:rmin_reco>>p_rmin",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max),"prof");
+nt->Draw("eff_rmin:rmin_reco>>p_rmin",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max),"prof");
 
 //###############################################Efficiencies after Correction###########################################################################
 
 ///////////////cent dependent///////////////////
 TProfile * p_cent_corr= new TProfile("p_cent_corr",";centrality bin;efficiency",200,0,200);
-nt->Draw("(1/eff)*(mpt>0):cent>>p_cent_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):cent>>p_cent_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 
 TCanvas * c5 = new TCanvas("c5","",600,600);
@@ -174,7 +174,7 @@ c5->SaveAs(Form("../plots/eff_cent_after_corr_nstep_cent%d_accept%d_pt%d.png",ns
 
 ////////////pt dependent////////////////////////
 TProfile * p_pt_corr= new TProfile("p_pt_corr",";p_{T}(GeV/c);efficiency",maxbin,x);
-nt->Draw("(1/eff)*(mpt>0):pt>>p_pt_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):pt>>p_pt_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c6 = new TCanvas("c6","",600,600);
 c6->SetLogx();
@@ -187,7 +187,7 @@ c6->SaveAs(Form("../plots/eff_pt_after_corr_nstep_cent%d_accept%d_pt%d_rmin%d_pt
 //////////acceptance dependent///////////////////
 
 TProfile2D * p_eta_phi_corr = new TProfile2D("p_eta_phi_corr",";#phi;#eta;",20,-TMath::Pi(),TMath::Pi(),20,-2.4,2.4);
-nt->Draw("(1/eff)*(mpt>0):eta:phi>>p_eta_phi_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):eta:phi>>p_eta_phi_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c7 = new TCanvas("c7","",600,600);
 c7->SetRightMargin(0.2);
@@ -198,7 +198,7 @@ c7->SaveAs(Form("../plots/eff_accept_after_corr_nstep_cent%d_accept%d_pt%d_rmin%
 ///////////eta dependent/////////////////////////
 TProfile * p_eta_corr = new TProfile("p_eta_corr",";#eta;efficiency",20,-2.4,2.4);
 
-nt->Draw("(1/eff)*(mpt>0):eta>>p_eta_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):eta>>p_eta_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c8 = new TCanvas("c8","",600,600);
 c8->SetRightMargin(0.2);
@@ -211,7 +211,7 @@ c8->SaveAs(Form("../plots/eff_eta_after_corr_nstep_cent%d_accept%d_pt%d_rmin%d_p
 
 ////////////phi dependent/////////////////////////
 TProfile * p_phi_corr = new TProfile("p_phi_corr",";#phi;efficiency",20,-TMath::Pi(),TMath::Pi());
-nt->Draw("(1/eff)*(mpt>0):phi>>p_phi_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):phi>>p_phi_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c9 = new TCanvas("c9","",600,600);
 c9->SetRightMargin(0.2);
@@ -224,7 +224,7 @@ c9->SaveAs(Form("../plots/eff_phi_after_corr_nstep_cent%d_accept%d_pt%d_rmin%d_p
 
 ////////////rmin dependent/////////////////////////
 TProfile * p_rmin_corr = new TProfile("p_rmin_corr",";r_{min};efficiency",n_rmin_bins,rmin_bins);
-nt->Draw("(1/eff)*(mpt>0):rmin_reco>>p_rmin_corr",Form("((mpt<=0 || (trackselect && mpt>0))&& abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
+nt->Draw("(1/eff)*(mpt>0 && trackselect):rmin_reco>>p_rmin_corr",Form("(abs(eta)<2.4&& pt>%.1f && pt<%.1f)",bin_pt_min,bin_pt_max));
 
 TCanvas * c10 = new TCanvas("c10","",600,600);
 c10->SetRightMargin(0.2);
@@ -264,7 +264,7 @@ nt->Draw("eff_rmin:rmin_reco>>p_eff_rmin",Form("((mpt<=0 || (trackselect && mpt>
 
 TFile *f_efficiency;
  if(is_final){
- f_efficiency= new TFile(Form("../final_hists_vsPF/eff_pt%d_%d_cent%d_%d_step_cent%daccept%dpt%drmin%d.root",(int)bin_pt_min,(int)bin_pt_max,(int)bin_cent_min,(int)bin_cent_max,nstep_cent,nstep_accept,nstep_pt,nstep_rmin),"recreate");
+ f_efficiency= new TFile(Form("../final_hists_puCalo/eff_pt%d_%d_cent%d_%d_step_cent%daccept%dpt%drmin%d.root",(int)bin_pt_min,(int)bin_pt_max,(int)bin_cent_min,(int)bin_cent_max,nstep_cent,nstep_accept,nstep_pt,nstep_rmin),"recreate");
 
  p_eff_cent->Write();
  p_eff_pt->Write();
